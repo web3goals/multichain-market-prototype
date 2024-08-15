@@ -20,7 +20,7 @@ describe("Market", function () {
     };
   }
 
-  it("Should buy and sell NFT", async function () {
+  it("Should list and buy NFT", async function () {
     const { userOne, userTwo, rwaContract, marketContract } = await loadFixture(
       initFixture
     );

@@ -16,6 +16,26 @@ async function main() {
       `Contract 'HelloWormhole' deployed to: ${await contract.getAddress()}`
     );
   }
+
+  if (!CONTRACTS[network].rwa) {
+    const contractFactory = await ethers.getContractFactory("RealWorldAsset");
+    const contract = await contractFactory.deploy();
+    await contract.waitForDeployment();
+    console.log(
+      `Contract 'RealWorldAsset' deployed to: ${await contract.getAddress()}`
+    );
+  }
+
+  if (!CONTRACTS[network].market && CONTRACTS[network].wormholeRelayer) {
+    const contractFactory = await ethers.getContractFactory("Market");
+    const contract = await contractFactory.deploy(
+      CONTRACTS[network].wormholeRelayer
+    );
+    await contract.waitForDeployment();
+    console.log(
+      `Contract 'Market' deployed to: ${await contract.getAddress()}`
+    );
+  }
 }
 
 main().catch((error) => {

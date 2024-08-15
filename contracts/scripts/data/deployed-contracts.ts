@@ -4,6 +4,8 @@ export const CONTRACTS: {
     wormholeChainId: number;
     wormholeRelayer: `0x${string}` | undefined;
     helloWormhole: `0x${string}` | undefined;
+    rwa: `0x${string}` | undefined;
+    market: `0x${string}` | undefined;
   };
 } = {
   optimismSepolia: {
@@ -11,11 +13,15 @@ export const CONTRACTS: {
     wormholeChainId: 10005,
     wormholeRelayer: "0x93BAD53DDfB6132b0aC8E37f6029163E63372cEE",
     helloWormhole: "0xFB22c49674E4482C22D4499392a8e2f760D84f8d",
+    rwa: "0xcee8564039B5620b847E91866e54d2DE3fCD10a0",
+    market: "0x1F2c31D5034F27A4352Bc6ca0fc72cdC32809808",
   },
   baseSepolia: {
     chainId: 84532,
     wormholeChainId: 10004,
     wormholeRelayer: "0x93BAD53DDfB6132b0aC8E37f6029163E63372cEE",
     helloWormhole: "0x17DC361D05E1A608194F508fFC4102717666779f",
+    rwa: "0x0000000000000000000000000000000000000000",
+    market: "0x96a5281959d962bA18481BEAfBe25C6c98316C95",
   },
 };

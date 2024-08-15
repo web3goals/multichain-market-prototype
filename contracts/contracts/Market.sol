@@ -26,6 +26,14 @@ contract Market is IWormholeReceiver {
         uint256 price
     );
 
+    event ItemBuyingCanceled(
+        address indexed buyer,
+        uint16 buyerChain,
+        address indexed nftAddress,
+        uint256 indexed tokenId,
+        uint256 price
+    );
+
     uint256 constant GAS_LIMIT = 50_000;
 
     IWormholeRelayer private immutable _wormholeRelayer;
@@ -97,7 +105,7 @@ contract Market is IWormholeReceiver {
     ) public payable isListed(nftAddress, tokenId) {
         // Check message value
         Listing memory listedItem = _listings[nftAddress][tokenId];
-        require(msg.value == listedItem.price);
+        require(msg.value == listedItem.price, "Message value incorrect");
         _balances[listedItem.seller] += msg.value;
         // Complete buying
         _completeBuying(nftAddress, tokenId, msg.sender, 0x0);
@@ -107,19 +115,20 @@ contract Market is IWormholeReceiver {
         uint16 targetChain,
         address targetAddress,
         address nftAddress,
-        uint256 tokenId
-    ) public payable isListed(nftAddress, tokenId) {
+        uint256 tokenId,
+        uint256 itemPrice,
+        address itemSeller
+    ) public payable {
         // Check message value
         uint256 cost = getWormholeCost(targetChain);
-        Listing memory listedItem = _listings[nftAddress][tokenId];
-        require(msg.value == cost + listedItem.price);
-        _balances[listedItem.seller] += msg.value;
+        require(msg.value == cost + itemPrice, "Message value incorrect");
+        _balances[itemSeller] += itemPrice;
         // Send request to wormhole relayer
         _wormholeRelayer.sendPayloadToEvm{value: cost}(
             targetChain,
             targetAddress,
-            abi.encode(nftAddress, tokenId, msg.sender), // payload
-            0, // no receiver value needed since we're just passing a message
+            abi.encode(nftAddress, tokenId, msg.sender, itemPrice, itemSeller),
+            0,
             GAS_LIMIT
         );
     }
@@ -137,12 +146,24 @@ contract Market is IWormholeReceiver {
             "Only relayer allowed"
         );
         // Parse the payload
-        (address nftAddress, uint256 tokenId, address sender) = abi.decode(
-            payload,
-            (address, uint256, address)
-        );
-        // Complete buying
-        _completeBuying(nftAddress, tokenId, sender, sourceChain);
+        (
+            address nftAddress,
+            uint256 tokenId,
+            address sender,
+            uint256 itemPrice,
+            address itemSeller
+        ) = abi.decode(payload, (address, uint256, address, uint256, address));
+        // Check item price and seller
+        Listing memory listedItem = _listings[nftAddress][tokenId];
+        if (
+            listedItem.price > 0 &&
+            listedItem.price == itemPrice &&
+            listedItem.seller == itemSeller
+        ) {
+            _completeBuying(nftAddress, tokenId, sender, sourceChain);
+        } else {
+            _cancelBuying(nftAddress, tokenId, sender, sourceChain);
+        }
     }
 
     function withdrawBalance() external {
@@ -171,9 +192,27 @@ contract Market is IWormholeReceiver {
         uint16 buyerChain
     ) internal {
         Listing memory listedItem = _listings[nftAddress][tokenId];
+        delete (_listings[nftAddress][tokenId]);
         IERC721(nftAddress).safeTransferFrom(listedItem.seller, buyer, tokenId);
         emit ItemBought(
-            msg.sender,
+            buyer,
+            buyerChain,
+            nftAddress,
+            tokenId,
+            listedItem.price
+        );
+    }
+
+    function _cancelBuying(
+        address nftAddress,
+        uint256 tokenId,
+        address buyer,
+        uint16 buyerChain
+    ) internal {
+        Listing memory listedItem = _listings[nftAddress][tokenId];
+        // TODO: Cancel buying by sending request to Wormhole
+        emit ItemBuyingCanceled(
+            buyer,
             buyerChain,
             nftAddress,
             tokenId,
