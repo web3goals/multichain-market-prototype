@@ -8,7 +8,7 @@ import { useAccount } from "wagmi";
 import EntityList from "./entity-list";
 import { NFTCard } from "./nft-card";
 
-export function NftListAccount() {
+export function NFTListAccount() {
   const { handleError } = useError();
   const [nfts, setNfts] = useState<NFT[] | undefined>();
   const { address } = useAccount();
