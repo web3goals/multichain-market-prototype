@@ -20,7 +20,8 @@ export function SiteHeader() {
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
             <span className="inline-block text-primary font-bold">
-              {siteConfig.emoji} <span>{siteConfig.name}</span>
+              {siteConfig.emoji}{" "}
+              <span className="hidden md:inline-block">{siteConfig.name}</span>
             </span>
           </Link>
         </div>
