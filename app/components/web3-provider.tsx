@@ -1,13 +1,13 @@
 "use client";
 
-import { siteConfig } from "@/config/site";
+import { chainConfigs } from "@/config/chains";
 import { PrivyProvider, type PrivyClientConfig } from "@privy-io/react-auth";
 import { WagmiProvider, createConfig } from "@privy-io/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { http } from "viem";
 
-const supportedChains = Object.values(siteConfig.contracts).map(
-  (contracts) => contracts.chain
+const supportedChains = Object.values(chainConfigs).map(
+  (chainConfig) => chainConfig.chain
 );
 
 const privyConfig: PrivyClientConfig = {
