@@ -35,6 +35,10 @@ describe("Market", function () {
     await marketContract
       .connect(userOne)
       .listItem(await rwaContract.getAddress(), 0, ethers.parseEther("0.05"));
+    // Check history
+    let histories = await marketContract.getHistories();
+    expect(histories[0].tokenId).to.equal(0);
+    expect(histories[0].buyer).to.equal(ethers.ZeroAddress);
     // Buy NFT
     await expect(
       marketContract
@@ -52,6 +56,10 @@ describe("Market", function () {
     expect(await marketContract.getBalance(userOne)).to.equal(
       ethers.parseEther("0.05")
     );
+    // Check history
+    histories = await marketContract.getHistories();
+    expect(histories[0].tokenId).to.equal(0);
+    expect(histories[0].buyer).to.equal(userTwo);
     // Withdraw balance
     await expect(
       marketContract.connect(userOne).withdrawBalance()

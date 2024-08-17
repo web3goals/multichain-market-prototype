@@ -11,6 +11,14 @@ contract Market is IWormholeReceiver {
         address seller;
     }
 
+    struct ListingHistory {
+        address nftAddress;
+        uint256 tokenId;
+        address seller;
+        uint256 price;
+        address buyer;
+    }
+
     event ItemListed(
         address indexed seller,
         address indexed nftAddress,
@@ -39,6 +47,7 @@ contract Market is IWormholeReceiver {
     IWormholeRelayer private immutable _wormholeRelayer;
     mapping(address => mapping(uint256 => Listing)) private _listings;
     mapping(address => uint256) private _balances;
+    ListingHistory[] private _histories;
 
     constructor(address wormholeRelayer) {
         _wormholeRelayer = IWormholeRelayer(wormholeRelayer);
@@ -97,6 +106,10 @@ contract Market is IWormholeReceiver {
         // Create listing
         _listings[nftAddress][tokenId] = Listing(price, msg.sender);
         emit ItemListed(msg.sender, nftAddress, tokenId, price);
+        // Create history
+        _histories.push(
+            ListingHistory(nftAddress, tokenId, msg.sender, price, address(0))
+        );
     }
 
     function buyItem(
@@ -185,6 +198,10 @@ contract Market is IWormholeReceiver {
         return _balances[seller];
     }
 
+    function getHistories() external view returns (ListingHistory[] memory) {
+        return _histories;
+    }
+
     function _completeBuying(
         address nftAddress,
         uint256 tokenId,
@@ -192,8 +209,13 @@ contract Market is IWormholeReceiver {
         uint16 buyerChain
     ) internal {
         Listing memory listedItem = _listings[nftAddress][tokenId];
+        // Delete listing
         delete (_listings[nftAddress][tokenId]);
+        // Update history
+        _updateHistoryBuyer(nftAddress, tokenId, buyer);
+        // Transfer NFT
         IERC721(nftAddress).safeTransferFrom(listedItem.seller, buyer, tokenId);
+        // Emit event
         emit ItemBought(
             buyer,
             buyerChain,
@@ -201,6 +223,22 @@ contract Market is IWormholeReceiver {
             tokenId,
             listedItem.price
         );
+    }
+
+    function _updateHistoryBuyer(
+        address nftAddress,
+        uint256 tokenId,
+        address newBuyer
+    ) internal {
+        for (uint256 i = 0; i < _histories.length; i++) {
+            if (
+                _histories[i].nftAddress == nftAddress &&
+                _histories[i].tokenId == tokenId
+            ) {
+                _histories[i].buyer = newBuyer;
+                return;
+            }
+        }
     }
 
     function _cancelBuying(
