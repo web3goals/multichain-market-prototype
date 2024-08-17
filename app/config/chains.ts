@@ -11,6 +11,6 @@ export type ChainConfigs = typeof chainConfigs;
 export const chainConfigs = {
   optimismSepolia: {
     chain: optimismSepolia,
-    market: "0x0000000000000000000000000000000000000000",
+    market: "0xeCD9adC284498727f7576267C3C6DC0a14481b1e",
   } as ChainConfig,
 };

@@ -1,6 +1,7 @@
-import { NFT } from "@/lib/nfts";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { addressToShortAddress } from "@/lib/converters";
+import { NFT } from "@/lib/nfts";
+import { NFTCardFooter } from "./nft-card-footer";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export function NFTCard(props: { nft: NFT }) {
   return (
@@ -9,7 +10,7 @@ export function NFTCard(props: { nft: NFT }) {
         <AvatarImage src={props.nft.image} alt="Icon" />
         <AvatarFallback className="text-6xl rounded-sm">🪙</AvatarFallback>
       </Avatar>
-      <div className="flex flex-row gap-2 items-center mt-4">
+      <div className="flex flex-row gap-2 items-center mt-8">
         <p className="text-xl font-bold">{props.nft.contractName}</p>
         <p className="text-xl font-bold text-muted-foreground">
           #{props.nft.id}
@@ -52,6 +53,9 @@ export function NFTCard(props: { nft: NFT }) {
         >
           {addressToShortAddress(props.nft.owner)}
         </a>
+      </div>
+      <div className="mt-8">
+        <NFTCardFooter nft={props.nft} />
       </div>
     </div>
   );

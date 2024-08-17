@@ -27,8 +27,6 @@ export function NftListAccount() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
-  console.log({ nfts });
-
   return (
     <EntityList
       entities={nfts}
