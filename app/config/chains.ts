@@ -13,11 +13,11 @@ export const chainConfigs = {
   optimismSepolia: {
     chain: optimismSepolia,
     wormholeChainId: 10005,
-    market: "0xeCD9adC284498727f7576267C3C6DC0a14481b1e",
+    market: "0x38DCFdF916e5C5DB97B8d9818e1Babc7C7253270",
   } as ChainConfig,
   baseSepolia: {
     chain: baseSepolia,
     wormholeChainId: 10004,
-    market: "0x0c44cFecaFE4da904Ee24984FD74c91C2bE431B7",
+    market: "0x02e1A2a943E6Ce63a89d40EFAE63bf6AcDFEc268",
   } as ChainConfig,
 };
