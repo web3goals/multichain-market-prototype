@@ -4,18 +4,8 @@ import { addressToShortAddress } from "@/lib/converters";
 import { NFT } from "@/lib/nfts";
 import { NFTCardFooter } from "./nft-card-footer";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { useReadContract } from "wagmi";
-import { erc721Abi } from "viem";
 
 export function NFTCard(props: { nft: NFT }) {
-  const { data: nftOwner } = useReadContract({
-    address: props.nft.contractAddress,
-    abi: erc721Abi,
-    functionName: "ownerOf",
-    args: [BigInt(props.nft.id)],
-    chainId: props.nft.chain.id,
-  });
-
   return (
     <div className="w-full flex flex-col border rounded px-6 py-8">
       <Avatar className="size-48 rounded-sm">
@@ -56,19 +46,19 @@ export function NFTCard(props: { nft: NFT }) {
         <p className="min-w-[80px] text-sm text-muted-foreground">Owner:</p>
         <a
           href={
-            props.nft.chain.blockExplorers?.default.url + "/address/" + nftOwner
+            props.nft.chain.blockExplorers?.default.url +
+            "/address/" +
+            props.nft.owner
           }
           target="_blank"
           className="text-sm break-all underline underline-offset-4"
         >
-          {addressToShortAddress(nftOwner)}
+          {addressToShortAddress(props.nft.owner)}
         </a>
       </div>
-      {nftOwner && (
-        <div className="mt-8">
-          <NFTCardFooter nft={props.nft} nftOwner={nftOwner} />
-        </div>
-      )}
+      <div className="mt-8">
+        <NFTCardFooter nft={props.nft} />
+      </div>
     </div>
   );
 }

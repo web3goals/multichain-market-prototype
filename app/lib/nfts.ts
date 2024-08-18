@@ -19,6 +19,7 @@ export type NFT = {
   contractAddress: Address;
   contractName: string;
   chain: Chain;
+  owner: Address;
 };
 
 export async function getNFTsForOwner(owner: Address): Promise<NFT[]> {
@@ -56,7 +57,7 @@ async function getNFTsForOwnerByChain(
   const { data } = await axios.get(
     `https://${alchemyChain}.g.alchemy.com/nft/v3/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTsForOwner?owner=${owner}&withMetadata=true&pageSize=100`
   );
-  return alchemyDataForNFTs(data, chain);
+  return await alchemyDataForNFTs(data, chain);
 }
 
 async function getNFTsForSaleByChain(chain: Chain): Promise<NFT[]> {
@@ -89,7 +90,22 @@ async function getNFTsForSaleByChain(chain: Chain): Promise<NFT[]> {
     `https://${alchemyChain}.g.alchemy.com/nft/v3/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getNFTMetadataBatch`,
     { tokens: tokens }
   );
-  return alchemyDataForNFTs(data, chain);
+  return await alchemyDataForNFTs(data, chain);
+}
+
+async function getOwnerForNFT(
+  contractAddress: string,
+  tokenId: string,
+  chain: Chain
+): Promise<Address> {
+  const alchemyChain = chainToAlchemyChain(chain);
+  if (!alchemyChain) {
+    return zeroAddress;
+  }
+  const { data } = await axios.get(
+    `https://${alchemyChain}.g.alchemy.com/nft/v3/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}/getOwnersForNFT?contractAddress=${contractAddress}&tokenId=${tokenId}`
+  );
+  return data?.owners?.[0] || zeroAddress;
 }
 
 function chainToAlchemyChain(chain: Chain): string | undefined {
@@ -100,20 +116,28 @@ function chainToAlchemyChain(chain: Chain): string | undefined {
   return alchemyChain;
 }
 
-function alchemyDataForNFTs(data: any, chain: Chain): NFT[] {
+async function alchemyDataForNFTs(data: any, chain: Chain): Promise<NFT[]> {
   const alchemyNFTs = data.nfts || data.ownedNfts;
   if (!alchemyNFTs) {
     return [];
   }
   const nfts: NFT[] = [];
   for (let i = 0; i < alchemyNFTs.length; i++) {
+    const nftTokenId = alchemyNFTs[i].tokenId;
+    const nftContractAddress = alchemyNFTs[i].contract.address;
+    const nftOwner = await getOwnerForNFT(
+      nftContractAddress,
+      nftTokenId,
+      chain
+    );
     nfts.push({
-      id: alchemyNFTs[i].tokenId,
+      id: nftTokenId,
       description: alchemyNFTs[i].description,
       image: alchemyNFTs[i].image?.originalUrl,
-      contractAddress: alchemyNFTs[i].contract.address,
+      contractAddress: nftContractAddress,
       contractName: alchemyNFTs[i].contract.name,
       chain: chain,
+      owner: nftOwner,
     });
   }
   return nfts;
