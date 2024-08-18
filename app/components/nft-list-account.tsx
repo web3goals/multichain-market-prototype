@@ -1,6 +1,5 @@
 "use client";
 
-import { chainConfigs } from "@/config/chains";
 import useError from "@/hooks/useError";
 import { getNFTsForOwner, NFT } from "@/lib/nfts";
 import { useEffect, useState } from "react";
