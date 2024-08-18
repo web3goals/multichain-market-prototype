@@ -42,7 +42,7 @@ contract Market is IWormholeReceiver {
         uint256 price
     );
 
-    uint256 constant GAS_LIMIT = 50_000;
+    uint256 constant GAS_LIMIT = 200_000;
 
     IWormholeRelayer private immutable _wormholeRelayer;
     mapping(address => mapping(uint256 => Listing)) private _listings;
