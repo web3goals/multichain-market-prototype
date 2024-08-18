@@ -1,28 +1,21 @@
 "use client";
 
-import { chainConfigs } from "@/config/chains";
 import useError from "@/hooks/useError";
-import { getNFTsForOwner, NFT } from "@/lib/nfts";
+import { getNFTsForSale, NFT } from "@/lib/nfts";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 import EntityList from "./entity-list";
 import { NFTCard } from "./nft-card";
 
-export function NFTListAccount() {
+export function NFTListExplore() {
   const { handleError } = useError();
   const [nfts, setNfts] = useState<NFT[] | undefined>();
-  const { address } = useAccount();
 
   useEffect(() => {
-    if (address) {
-      getNFTsForOwner(address)
-        .then((nfts) => setNfts(nfts))
-        .catch((error) => handleError(error, true));
-    } else {
-      setNfts(undefined);
-    }
+    getNFTsForSale()
+      .then((nfts) => setNfts(nfts))
+      .catch((error) => handleError(error, true));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
+  }, []);
 
   return (
     <EntityList

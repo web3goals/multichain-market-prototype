@@ -1,13 +1,15 @@
+"use client";
+
 import { marketAbi } from "@/abi/market";
 import { chainToChainConfig } from "@/lib/chains";
 import { NFT } from "@/lib/nfts";
-import { isAddressEqual, zeroAddress } from "viem";
+import { Address, isAddressEqual } from "viem";
 import { useAccount, useReadContract } from "wagmi";
 import { NFTCardFooterBuy } from "./nft-card-footer-buy";
 import { NFTCardFooterSell } from "./nft-card-footer-sell";
 import { Skeleton } from "./ui/skeleton";
 
-export function NFTCardFooter(props: { nft: NFT }) {
+export function NFTCardFooter(props: { nft: NFT; nftOwner: Address }) {
   const { address } = useAccount();
 
   const { data: listing, isFetched: isListingFetched } = useReadContract({
@@ -23,7 +25,8 @@ export function NFTCardFooter(props: { nft: NFT }) {
   }
 
   if (
-    isAddressEqual(props.nft.owner, address || zeroAddress) &&
+    address &&
+    isAddressEqual(props.nftOwner, address) &&
     isListingFetched &&
     listing &&
     listing.price === BigInt(0)
