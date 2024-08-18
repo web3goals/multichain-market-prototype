@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 
 export function SiteHeaderConnectButton() {
   const { ready, authenticated, login, logout } = usePrivy();
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
 
   if (ready && !authenticated) {
     return <Button onClick={login}>Login</Button>;
@@ -19,7 +19,8 @@ export function SiteHeaderConnectButton() {
         Logout{" "}
         {address && (
           <span className="text-xs text-muted-foreground pl-1">
-            ({addressToShortAddress(address)})
+            ({addressToShortAddress(address)},{" "}
+            {chain?.name || "Unsupported chain"})
           </span>
         )}
       </Button>
