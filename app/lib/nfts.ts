@@ -76,6 +76,9 @@ async function getNFTsForSaleByChain(chain: Chain): Promise<NFT[]> {
   const historiesWithoutBuyer = histories.filter((history) =>
     isAddressEqual(history.buyer, zeroAddress)
   );
+  if (historiesWithoutBuyer.length === 0) {
+    return [];
+  }
   // Load metadata - https://docs.alchemy.com/reference/getnftmetadatabatch-v3
   const tokens = historiesWithoutBuyer.map((history) => ({
     contractAddress: history.nftAddress,
