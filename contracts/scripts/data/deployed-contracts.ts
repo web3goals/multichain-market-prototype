@@ -29,7 +29,7 @@ export const CONTRACTS: {
     wormholeChainId: 10002,
     wormholeRelayer: "0x7B1bD7a6b4E61c2a123AC6BC2cbfC614437D0470",
     helloWormhole: "0x0000000000000000000000000000000000000000",
-    rwa: "0x0000000000000000000000000000000000000000",
+    rwa: "0xC7A2D8ff608F7B944fA13325510612fb6e48B65b",
     market: "0xFe61dc25C3B8c3F990bCea5bb901704B2a8b9Bd2",
   },
   arbitrumSepolia: {
