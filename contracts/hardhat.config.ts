@@ -23,6 +23,14 @@ const config: HardhatUserConfig = {
       url: "https://sepolia.base.org",
       accounts: [process.env.PRIVATE_KEY as string],
     },
+    ethereumSepolia: {
+      url: "https://rpc.sepolia.org",
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
+    arbitrumSepolia: {
+      url: "https://sepolia-rollup.arbitrum.io/rpc",
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
   },
 };
 

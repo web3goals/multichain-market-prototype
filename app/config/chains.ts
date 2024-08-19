@@ -1,5 +1,11 @@
 import { Address } from "viem";
-import { baseSepolia, Chain, optimismSepolia } from "viem/chains";
+import {
+  arbitrumSepolia,
+  baseSepolia,
+  Chain,
+  optimismSepolia,
+  sepolia,
+} from "viem/chains";
 
 export type ChainConfig = {
   chain: Chain;
@@ -19,5 +25,15 @@ export const chainConfigs = {
     chain: baseSepolia,
     wormholeChainId: 10004,
     market: "0x02e1A2a943E6Ce63a89d40EFAE63bf6AcDFEc268",
+  } as ChainConfig,
+  ethereumSepolia: {
+    chain: sepolia,
+    wormholeChainId: 10002,
+    market: "0xFe61dc25C3B8c3F990bCea5bb901704B2a8b9Bd2",
+  } as ChainConfig,
+  arbitrumSepolia: {
+    chain: arbitrumSepolia,
+    wormholeChainId: 10003,
+    market: "0x539dA825856778B593a55aC4E8A0Ec1441f18e78",
   } as ChainConfig,
 };

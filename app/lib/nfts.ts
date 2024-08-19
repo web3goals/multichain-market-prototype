@@ -8,7 +8,12 @@ import {
   isAddressEqual,
   zeroAddress,
 } from "viem";
-import { optimismSepolia } from "viem/chains";
+import {
+  arbitrumSepolia,
+  baseSepolia,
+  optimismSepolia,
+  sepolia,
+} from "viem/chains";
 import { chainToChainConfig } from "./chains";
 import { marketAbi } from "@/abi/market";
 
@@ -115,6 +120,15 @@ function chainToAlchemyChain(chain: Chain): string | undefined {
   let alchemyChain;
   if (chain === optimismSepolia) {
     alchemyChain = "opt-sepolia";
+  }
+  if (chain === baseSepolia) {
+    alchemyChain = "base-sepolia";
+  }
+  if (chain === sepolia) {
+    alchemyChain = "eth-sepolia";
+  }
+  if (chain === arbitrumSepolia) {
+    alchemyChain = "arb-sepolia";
   }
   return alchemyChain;
 }
