@@ -1,4 +1,5 @@
 import { NFTListExplore } from "@/components/nft-list-explore";
+import { SupportedChains } from "@/components/supported-chains";
 import { Separator } from "@/components/ui/separator";
 
 export default function ExplorePage() {
@@ -10,6 +11,7 @@ export default function ExplorePage() {
           NFTs that you can buy using any preferred chain
         </p>
       </div>
+      <SupportedChains className="mt-4" />
       <Separator className="my-6" />
       <NFTListExplore />
     </div>

@@ -1,4 +1,5 @@
 import { NFTListAccount } from "@/components/nft-list-account";
+import { SupportedChains } from "@/components/supported-chains";
 import { Separator } from "@/components/ui/separator";
 
 export default function AccountPage() {
@@ -8,6 +9,7 @@ export default function AccountPage() {
         <h2 className="text-2xl font-bold tracking-tight">Account</h2>
         <p className="text-muted-foreground">NFTs you own and can sell</p>
       </div>
+      <SupportedChains className="mt-4" />
       <Separator className="my-6" />
       <NFTListAccount />
     </div>
