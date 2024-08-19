@@ -10,7 +10,7 @@ export function NFTCard(props: { nft: NFT }) {
     <div className="w-full flex flex-col border rounded px-6 py-8">
       <Avatar className="size-48 rounded-sm">
         <AvatarImage src={props.nft.image} alt="Icon" />
-        <AvatarFallback className="text-6xl rounded-sm">🪙</AvatarFallback>
+        <AvatarFallback className="text-6xl rounded-sm">🖼️</AvatarFallback>
       </Avatar>
       <div className="flex flex-row gap-2 items-center mt-8">
         <p className="text-xl font-bold">{props.nft.contractName}</p>
