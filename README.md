@@ -18,6 +18,7 @@ Sell / Buy NFTs and don't worry about chains.
 
 - Wormhole relayer is used to send messages between market contracts deployed on different chains to confirm purchases, send tokens, and withdraw income.
 - Wormhole connect widget is used to enable sellers to transfer income to their preferred chain in a few clicks.
+- Hardhat, OpenZeppelin, Next.js, shadcn/ui, viem, Wagmi, Privy.
 
 ## 🔗 Artifacts
 
