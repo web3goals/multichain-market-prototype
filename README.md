@@ -1,6 +1,10 @@
+![Cover](/Cover.png)
+
 # 🐙 Multichain Market
 
 A multichain marketplace powered by Wormhole.
+
+Sell / Buy NFTs and don't worry about chains.
 
 ## 🛠️ Technologies
 
@@ -9,7 +13,7 @@ A multichain marketplace powered by Wormhole.
 
 ## 🔗 Artifacts
 
-- Application - [https://multichain-market.vercel.app/](multichain-market.vercel.app)
+- Application - [multichain-market.vercel.app](https://multichain-market.vercel.app/)
 - Contracts (Optimism Sepolia):
   - Market - 0x38DCFdF916e5C5DB97B8d9818e1Babc7C7253270
 - Contracts (Base Sepolia):
