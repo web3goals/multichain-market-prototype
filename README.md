@@ -2,9 +2,17 @@
 
 # 🐙 Multichain Market
 
-A multichain marketplace powered by Wormhole.
+A multichain marketplace powered by [Wormhole](https://wormhole.com/).
 
 Sell / Buy NFTs and don't worry about chains.
+
+## ✨ Features
+
+- Login via wallet, email or Google.
+- Explore the NFTs in your account and list them for sale.
+- Explore the listed NFTs and purchase them using any chain.
+- Withdraw your income.
+- Bridge your income to any preferred chain.
 
 ## 🛠️ Technologies
 
